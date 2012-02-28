@@ -12,9 +12,18 @@
 		8182EF3614FB1EE600D709C3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF3514FB1EE600D709C3 /* CoreGraphics.framework */; };
 		8182EF3C14FB1EE600D709C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8182EF3A14FB1EE600D709C3 /* InfoPlist.strings */; };
 		8182EF3E14FB1EE600D709C3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF3D14FB1EE600D709C3 /* main.m */; };
-		8182EF4214FB1EE600D709C3 /* CamshiftAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF4114FB1EE600D709C3 /* CamshiftAppDelegate.m */; };
+		8182EF4214FB1EE600D709C3 /* CamshiftAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF4114FB1EE600D709C3 /* CamshiftAppDelegate.mm */; };
 		8182EF4514FB1EE600D709C3 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8182EF4314FB1EE600D709C3 /* MainStoryboard.storyboard */; };
-		8182EF4814FB1EE600D709C3 /* CamshiftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF4714FB1EE600D709C3 /* CamshiftViewController.m */; };
+		8182EF4814FB1EE600D709C3 /* CamshiftViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF4714FB1EE600D709C3 /* CamshiftViewController.mm */; };
+		8182EF4F14FB1F4C00D709C3 /* OpenCV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF4E14FB1F4C00D709C3 /* OpenCV.framework */; };
+		8182EF5114FB1F7000D709C3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF5014FB1F7000D709C3 /* libz.dylib */; };
+		8182EF5314FB1F7B00D709C3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF5214FB1F7B00D709C3 /* CoreMedia.framework */; };
+		8182EF5514FB1F8300D709C3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF5414FB1F8300D709C3 /* CoreVideo.framework */; };
+		8182EF5714FB1F9000D709C3 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF5614FB1F9000D709C3 /* ImageIO.framework */; };
+		8182EF5914FB1F9B00D709C3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF5814FB1F9B00D709C3 /* AVFoundation.framework */; };
+		8182EF5E14FB200900D709C3 /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF5B14FB200800D709C3 /* UIImage+OpenCV.mm */; };
+		8182EF5F14FB200900D709C3 /* VideoCaptureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8182EF5D14FB200800D709C3 /* VideoCaptureViewController.mm */; };
+		8182EF6C14FB626600D709C3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF6B14FB626600D709C3 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,15 +31,26 @@
 		8182EF3114FB1EE600D709C3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8182EF3314FB1EE600D709C3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8182EF3514FB1EE600D709C3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		8182EF3914FB1EE600D709C3 /* CamShift-Info.plist */ = {isa = PBXFileReference; path = "CamShift-Info.plist"; sourceTree = "<group>"; };
+		8182EF3914FB1EE600D709C3 /* CamShift-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CamShift-Info.plist"; sourceTree = "<group>"; };
 		8182EF3B14FB1EE600D709C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8182EF3D14FB1EE600D709C3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8182EF3F14FB1EE600D709C3 /* CamShift-Prefix.pch */ = {isa = PBXFileReference; path = "CamShift-Prefix.pch"; sourceTree = "<group>"; };
-		8182EF4014FB1EE600D709C3 /* CamshiftAppDelegate.h */ = {isa = PBXFileReference; path = CamshiftAppDelegate.h; sourceTree = "<group>"; };
-		8182EF4114FB1EE600D709C3 /* CamshiftAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CamshiftAppDelegate.m; sourceTree = "<group>"; };
+		8182EF3F14FB1EE600D709C3 /* CamShift-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CamShift-Prefix.pch"; sourceTree = "<group>"; };
+		8182EF4014FB1EE600D709C3 /* CamshiftAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CamshiftAppDelegate.h; sourceTree = "<group>"; };
+		8182EF4114FB1EE600D709C3 /* CamshiftAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CamshiftAppDelegate.mm; sourceTree = "<group>"; };
 		8182EF4414FB1EE600D709C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		8182EF4614FB1EE600D709C3 /* CamshiftViewController.h */ = {isa = PBXFileReference; path = CamshiftViewController.h; sourceTree = "<group>"; };
-		8182EF4714FB1EE600D709C3 /* CamshiftViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CamshiftViewController.m; sourceTree = "<group>"; };
+		8182EF4614FB1EE600D709C3 /* CamshiftViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CamshiftViewController.h; sourceTree = "<group>"; };
+		8182EF4714FB1EE600D709C3 /* CamshiftViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CamshiftViewController.mm; sourceTree = "<group>"; };
+		8182EF4E14FB1F4C00D709C3 /* OpenCV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenCV.framework; sourceTree = "<group>"; };
+		8182EF5014FB1F7000D709C3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		8182EF5214FB1F7B00D709C3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		8182EF5414FB1F8300D709C3 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		8182EF5614FB1F9000D709C3 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		8182EF5814FB1F9B00D709C3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8182EF5A14FB200800D709C3 /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
+		8182EF5B14FB200800D709C3 /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
+		8182EF5C14FB200800D709C3 /* VideoCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCaptureViewController.h; sourceTree = "<group>"; };
+		8182EF5D14FB200800D709C3 /* VideoCaptureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoCaptureViewController.mm; sourceTree = "<group>"; };
+		8182EF6B14FB626600D709C3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,9 +58,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8182EF6C14FB626600D709C3 /* QuartzCore.framework in Frameworks */,
+				8182EF5914FB1F9B00D709C3 /* AVFoundation.framework in Frameworks */,
+				8182EF5714FB1F9000D709C3 /* ImageIO.framework in Frameworks */,
+				8182EF5514FB1F8300D709C3 /* CoreVideo.framework in Frameworks */,
+				8182EF5314FB1F7B00D709C3 /* CoreMedia.framework in Frameworks */,
+				8182EF5114FB1F7000D709C3 /* libz.dylib in Frameworks */,
 				8182EF3214FB1EE600D709C3 /* UIKit.framework in Frameworks */,
 				8182EF3414FB1EE600D709C3 /* Foundation.framework in Frameworks */,
 				8182EF3614FB1EE600D709C3 /* CoreGraphics.framework in Frameworks */,
+				8182EF4F14FB1F4C00D709C3 /* OpenCV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +94,13 @@
 		8182EF3014FB1EE600D709C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8182EF6B14FB626600D709C3 /* QuartzCore.framework */,
+				8182EF5814FB1F9B00D709C3 /* AVFoundation.framework */,
+				8182EF5614FB1F9000D709C3 /* ImageIO.framework */,
+				8182EF5414FB1F8300D709C3 /* CoreVideo.framework */,
+				8182EF5214FB1F7B00D709C3 /* CoreMedia.framework */,
+				8182EF5014FB1F7000D709C3 /* libz.dylib */,
+				8182EF4E14FB1F4C00D709C3 /* OpenCV.framework */,
 				8182EF3114FB1EE600D709C3 /* UIKit.framework */,
 				8182EF3314FB1EE600D709C3 /* Foundation.framework */,
 				8182EF3514FB1EE600D709C3 /* CoreGraphics.framework */,
@@ -77,11 +111,15 @@
 		8182EF3714FB1EE600D709C3 /* CamShift */ = {
 			isa = PBXGroup;
 			children = (
+				8182EF5A14FB200800D709C3 /* UIImage+OpenCV.h */,
+				8182EF5B14FB200800D709C3 /* UIImage+OpenCV.mm */,
+				8182EF5C14FB200800D709C3 /* VideoCaptureViewController.h */,
+				8182EF5D14FB200800D709C3 /* VideoCaptureViewController.mm */,
 				8182EF4014FB1EE600D709C3 /* CamshiftAppDelegate.h */,
-				8182EF4114FB1EE600D709C3 /* CamshiftAppDelegate.m */,
+				8182EF4114FB1EE600D709C3 /* CamshiftAppDelegate.mm */,
 				8182EF4314FB1EE600D709C3 /* MainStoryboard.storyboard */,
 				8182EF4614FB1EE600D709C3 /* CamshiftViewController.h */,
-				8182EF4714FB1EE600D709C3 /* CamshiftViewController.m */,
+				8182EF4714FB1EE600D709C3 /* CamshiftViewController.mm */,
 				8182EF3814FB1EE600D709C3 /* Supporting Files */,
 			);
 			path = CamShift;
@@ -161,8 +199,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8182EF3E14FB1EE600D709C3 /* main.m in Sources */,
-				8182EF4214FB1EE600D709C3 /* CamshiftAppDelegate.m in Sources */,
-				8182EF4814FB1EE600D709C3 /* CamshiftViewController.m in Sources */,
+				8182EF4214FB1EE600D709C3 /* CamshiftAppDelegate.mm in Sources */,
+				8182EF4814FB1EE600D709C3 /* CamshiftViewController.mm in Sources */,
+				8182EF5E14FB200900D709C3 /* UIImage+OpenCV.mm in Sources */,
+				8182EF5F14FB200900D709C3 /* VideoCaptureViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +276,11 @@
 		8182EF4C14FB1EE600D709C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CamShift/CamShift-Prefix.pch";
 				INFOPLIST_FILE = "CamShift/CamShift-Info.plist";
@@ -247,6 +292,11 @@
 		8182EF4D14FB1EE600D709C3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CamShift/CamShift-Prefix.pch";
 				INFOPLIST_FILE = "CamShift/CamShift-Info.plist";
@@ -274,6 +324,7 @@
 				8182EF4D14FB1EE600D709C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
