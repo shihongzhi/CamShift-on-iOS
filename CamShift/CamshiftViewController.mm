@@ -41,7 +41,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.image = nil;
-    self.hdims = 16;
+    self.hdims = 32;
     self.trackObjectFlag = 0;
     self.selectCGRect = CGRectMake(0, 0, 0, 0);
 }
@@ -107,7 +107,7 @@
         
         self.backproject = cvCreateImage(cvGetSize(self.image), 8, 1);
         
-        float hranges_arr[] = {16, 235};
+        float hranges_arr[] = {0, 255};
         float* hranges = hranges_arr;
         self.hist = cvCreateHist(1, &_hdims, CV_HIST_ARRAY, &hranges, 1);
     }
