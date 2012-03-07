@@ -37,7 +37,9 @@
 // -1 -- 跟踪状态，但还没有进行属性提取
 //  1 -- 跟踪状态，且已经进行了属性提取
 @property (nonatomic) int trackObjectFlag;
+@property (weak, nonatomic) IBOutlet UIButton *recordButton;
 
+- (IBAction)toggleRecord:(id)sender;
 
 - (IBAction)toggleTorch:(id)sender;
 - (IBAction)toggleCamera:(id)sender;

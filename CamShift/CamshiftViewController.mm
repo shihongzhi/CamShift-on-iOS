@@ -27,6 +27,7 @@
 @synthesize selectOrigin = _selectOrigin;
 @synthesize selectCGRect = _selectCGRect;
 @synthesize trackObjectFlag = _trackObjectFlag;
+@synthesize recordButton = _recordButton;
 
 - (void)didReceiveMemoryWarning
 {
@@ -48,6 +49,7 @@
 
 - (void)viewDidUnload
 {
+    [self setRecordButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -199,6 +201,30 @@
     
     [CATransaction commit];
     
+}
+
+- (IBAction)toggleRecord:(id)sender {
+    if (!self.isRecoding) {
+        NSLog(@"start video recording...");
+        if (!self.assetWriter) {
+            NSLog(@"Setup writer failed");
+            return;
+        }
+        self.isRecoding = YES;
+        [self.recordButton setTitle:@"Stop" forState:UIControlStateNormal];
+        [self.assetWriter startWriting];
+        [self.assetWriter startSessionAtSourceTime:kCMTimeZero];
+    }
+    else
+    {
+        NSLog(@"finish video recording...");
+        self.isRecoding = NO;
+        [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
+        if (![self.assetWriter finishWriting]) {
+            NSLog(@"assetWriter finishWriting error!");
+        }
+        NSLog(@"stopped record");
+    }
 }
 
 - (IBAction)toggleTorch:(id)sender {

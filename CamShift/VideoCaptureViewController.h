@@ -50,6 +50,12 @@
 @property (nonatomic, readonly) AVCaptureVideoDataOutput *videoOutput;
 @property (nonatomic, readonly) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 
+@property (nonatomic, strong) AVAssetWriterInput *assetWriterInput;
+@property (nonatomic, strong) AVAssetWriterInputPixelBufferAdaptor *pixelBufferAdaptor;
+@property (nonatomic, strong) AVAssetWriter *assetWriter;
+@property (nonatomic, strong) NSURL *tempFileURL;
+@property (nonatomic, assign) BOOL isRecoding;
+@property (nonatomic, strong) NSError *assetWriterError;
 
 // -1: default, 0: back camera, 1: front camera
 @property (nonatomic, assign) int camera;

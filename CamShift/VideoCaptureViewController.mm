@@ -22,6 +22,7 @@ const int kFrameTimeBufferSize = 5;
 // Private interface
 @interface VideoCaptureViewController ()
 - (BOOL)createCaptureSessionForCamera:(NSInteger)camera qualityPreset:(NSString *)qualityPreset grayscale:(BOOL)grayscale;
+- (BOOL)setupWriter;
 - (void)destroyCaptureSession;
 - (void)processFrame:(cv::Mat&)mat videoRect:(CGRect)rect videoOrientation:(AVCaptureVideoOrientation)orientation;
 - (void)updateDebugInfo;
@@ -40,6 +41,12 @@ const int kFrameTimeBufferSize = 5;
 @synthesize captureDevice = _captureDevice;
 @synthesize videoOutput = _videoOutput;
 @synthesize videoPreviewLayer = _videoPreviewLayer;
+@synthesize assetWriterInput = _assetWriterInput;
+@synthesize pixelBufferAdaptor = _pixelBufferAdaptor;
+@synthesize assetWriter = _assetWriter;
+@synthesize tempFileURL = _tempFileURL;
+@synthesize isRecoding = _isRecoding;
+@synthesize assetWriterError = _assetWriterError;
 
 @dynamic showDebugInfo;
 @dynamic torchOn;
@@ -82,12 +89,14 @@ const int kFrameTimeBufferSize = 5;
     _camera = -1;
     _qualityPreset = AVCaptureSessionPresetMedium;
     _captureGrayscale = YES;
+    self.isRecoding = NO;
     
     // Create frame time circular buffer for calculating averaged fps
     _frameTimes = (float*)malloc(sizeof(float) * kFrameTimeBufferSize);
     
     
     [self createCaptureSessionForCamera:_camera qualityPreset:_qualityPreset grayscale:_captureGrayscale];
+    [self setupWriter];
     [_captureSession startRunning];
 }
 
@@ -107,6 +116,13 @@ const int kFrameTimeBufferSize = 5;
     [self didChangeValueForKey:@"fps"];
     
     [self updateDebugInfo];
+}
+
+
+
+- (NSURL *) tempFileURL
+{
+    return [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.mov"]];
 }
 
 - (BOOL)showDebugInfo
@@ -207,6 +223,23 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CGRect videoRect = CGRectMake(0.0f, 0.0f, CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
         AVCaptureVideoOrientation videoOrientation = [[[_videoOutput connections] objectAtIndex:0] videoOrientation];
         
+        if (self.isRecoding) {
+            static int64_t frameNumber = 0;
+            //CVPixelBufferLockBaseAddress(pixelBuffer);
+            if (self.assetWriterInput.readyForMoreMediaData) {
+                if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(frameNumber, 25)]) {
+                    NSLog(@"Unable append pixelBuffer to adaptor");
+                    NSLog(@"AVAssetWriter alloc error:%@", self.assetWriterError);
+                }
+            }
+            else
+            {
+                NSLog(@"assetWriterInput is not readyForMoreMediaData");
+            }
+            NSLog(@"recording...frameNumber:%lld", frameNumber);
+            frameNumber++;
+        }
+        
         if (format == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
             // For grayscale mode, the luminance channel of the YUV data is used
             CVPixelBufferLockBaseAddress(pixelBuffer, 0);
@@ -233,7 +266,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             NSLog(@"Unsupported video format");
         }
         
-        // Update FPS calculation   暂时注释掉
+        // Update FPS calculation
         CMTime presentationTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer);
         
         if (_lastFrameTimestamp == 0) {
@@ -447,7 +480,41 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     _videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
     [_videoPreviewLayer setFrame:self.view.bounds];
     _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    [self.view.layer insertSublayer:_videoPreviewLayer atIndex:0];
+    [self.view.layer insertSublayer:_videoPreviewLayer atIndex:0];   //设置视频帧layer
+    
+    return YES;
+}
+
+- (BOOL)setupWriter
+{
+    NSError *error = self.assetWriterError;
+    self.assetWriter = [[AVAssetWriter alloc]
+                        initWithURL:self.tempFileURL fileType:AVFileTypeMPEG4 error:&error];
+    if (error != nil) {
+        NSLog(@"AVAssetWriter alloc error:%@", error);
+    }
+    NSParameterAssert(self.assetWriter);
+    NSDictionary *outputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInt:480], AVVideoWidthKey,
+                                    [NSNumber numberWithInt:360], AVVideoHeightKey,
+                                    AVVideoCodecH264,AVVideoCodecKey,nil];
+    
+    //是不是用AVMediaTypeVideo？
+    self.assetWriterInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:outputSettings];
+    self.assetWriterInput.expectsMediaDataInRealTime = YES;
+    NSParameterAssert(self.assetWriterInput);
+    
+    self.pixelBufferAdaptor = [[AVAssetWriterInputPixelBufferAdaptor alloc] initWithAssetWriterInput:self.assetWriterInput sourcePixelBufferAttributes:
+                               [NSDictionary dictionaryWithObjectsAndKeys:
+                                [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange],
+                                kCVPixelBufferPixelFormatTypeKey, nil]];
+
+    NSLog([self.tempFileURL absoluteString]);
+    NSParameterAssert(self.pixelBufferAdaptor);
+    if ([self.assetWriter canAddInput:self.assetWriterInput]) {
+        [self.assetWriter addInput:self.assetWriterInput];
+        NSLog(@"assetWriter addInput success!");
+    }
     
     return YES;
 }
