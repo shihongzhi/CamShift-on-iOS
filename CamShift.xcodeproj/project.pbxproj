@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8138C4AA1511D4DA00E6716A /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8138C4A91511D4DA00E6716A /* AssetsLibrary.framework */; };
 		8182EF3214FB1EE600D709C3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF3114FB1EE600D709C3 /* UIKit.framework */; };
 		8182EF3414FB1EE600D709C3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF3314FB1EE600D709C3 /* Foundation.framework */; };
 		8182EF3614FB1EE600D709C3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8182EF3514FB1EE600D709C3 /* CoreGraphics.framework */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8138C4A91511D4DA00E6716A /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8182EF2D14FB1EE600D709C3 /* CamShift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CamShift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8182EF3114FB1EE600D709C3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8182EF3314FB1EE600D709C3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8138C4AA1511D4DA00E6716A /* AssetsLibrary.framework in Frameworks */,
 				8182EF6C14FB626600D709C3 /* QuartzCore.framework in Frameworks */,
 				8182EF5914FB1F9B00D709C3 /* AVFoundation.framework in Frameworks */,
 				8182EF5714FB1F9000D709C3 /* ImageIO.framework in Frameworks */,
@@ -77,6 +80,7 @@
 		8182EF2214FB1EE600D709C3 = {
 			isa = PBXGroup;
 			children = (
+				8138C4A91511D4DA00E6716A /* AssetsLibrary.framework */,
 				8182EF3714FB1EE600D709C3 /* CamShift */,
 				8182EF3014FB1EE600D709C3 /* Frameworks */,
 				8182EF2E14FB1EE600D709C3 /* Products */,

@@ -65,5 +65,5 @@
 @property (nonatomic, assign) BOOL captureGrayscale;
 
 - (CGAffineTransform)affineTransformForVideoFrame:(CGRect)videoFrame orientation:(AVCaptureVideoOrientation)videoOrientation;
-
+- (void)removeFile:(NSURL *)fileURL;
 @end

@@ -212,7 +212,12 @@
         }
         self.isRecoding = YES;
         [self.recordButton setTitle:@"Stop" forState:UIControlStateNormal];
-        [self.assetWriter startWriting];
+        //caution
+        [self removeFile:self.tempFileURL];
+        if(![self.assetWriter startWriting]){
+            NSLog(@"assetWriter startWriting error!");
+            NSLog(@"%@", [self.assetWriter error]);
+        }
         [self.assetWriter startSessionAtSourceTime:kCMTimeZero];
     }
     else
@@ -224,6 +229,14 @@
             NSLog(@"assetWriter finishWriting error!");
         }
         NSLog(@"stopped record");
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+		[library writeVideoAtPathToSavedPhotosAlbum:self.tempFileURL
+									completionBlock:^(NSURL *assetURL, NSError *error) {
+										if (error) {
+											NSLog(@"writeVideoAtPathToSavedPhotosAlbum%@", error);										
+										}
+										
+									}];
     }
 }
 

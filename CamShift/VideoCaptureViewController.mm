@@ -229,7 +229,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             if (self.assetWriterInput.readyForMoreMediaData) {
                 if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(frameNumber, 25)]) {
                     NSLog(@"Unable append pixelBuffer to adaptor");
-                    NSLog(@"AVAssetWriter alloc error:%@", self.assetWriterError);
+                    
+                    NSLog(@"%@", [self.assetWriter error]);
                 }
             }
             else
@@ -487,11 +488,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (BOOL)setupWriter
 {
-    NSError *error = self.assetWriterError;
+    NSError *error = nil;
     self.assetWriter = [[AVAssetWriter alloc]
                         initWithURL:self.tempFileURL fileType:AVFileTypeMPEG4 error:&error];
     if (error != nil) {
-        NSLog(@"AVAssetWriter alloc error:%@", error);
+        NSLog(@"AVAssetWriter alloc %@:%@", error, [self.assetWriter error]);
     }
     NSParameterAssert(self.assetWriter);
     NSDictionary *outputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -513,10 +514,22 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSParameterAssert(self.pixelBufferAdaptor);
     if ([self.assetWriter canAddInput:self.assetWriterInput]) {
         [self.assetWriter addInput:self.assetWriterInput];
-        NSLog(@"assetWriter addInput success!");
+        NSLog(@"assetWriter addInput success!%@", [self.assetWriter error]);
     }
     
     return YES;
+}
+
+- (void) removeFile:(NSURL *)fileURL
+{
+    NSString *filePath = [fileURL path];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:filePath]) {
+        NSError *error;
+        if ([fileManager removeItemAtPath:filePath error:&error] == NO) {
+            NSLog(@"removeItemAtPath %@ error:%@", filePath, error);
+        }
+    }
 }
 
 // Tear down the video capture session

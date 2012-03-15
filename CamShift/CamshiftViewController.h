@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "VideoCaptureViewController.h"
 
 @interface CamshiftViewController : VideoCaptureViewController
