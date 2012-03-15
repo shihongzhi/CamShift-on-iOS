@@ -40,6 +40,7 @@
 
 // Current frames per second
 @property (nonatomic, readonly) float fps;
+@property (nonatomic) ino64_t frameNumber;
 
 @property (nonatomic, assign) BOOL showDebugInfo;
 @property (nonatomic, assign) BOOL torchOn;

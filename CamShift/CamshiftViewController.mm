@@ -205,6 +205,17 @@
 
 - (IBAction)toggleRecord:(id)sender {
     if (!self.isRecoding) {
+        if ([self.assetWriter status] == AVAssetWriterStatusCompleted) {
+            NSError *error = nil;
+            self.assetWriter = [[AVAssetWriter alloc]
+                                initWithURL:self.tempFileURL fileType:AVFileTypeMPEG4 error:&error];
+            if ([self.assetWriter canAddInput:self.assetWriterInput]) {
+                [self.assetWriter addInput:self.assetWriterInput];
+                NSLog(@"assetWriter addInput success!%@", [self.assetWriter error]);
+            }
+        }
+        self.frameNumber = 0;
+        
         NSLog(@"start video recording...");
         if (!self.assetWriter) {
             NSLog(@"Setup writer failed");

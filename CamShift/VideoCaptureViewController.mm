@@ -34,6 +34,7 @@ const int kFrameTimeBufferSize = 5;
 @implementation VideoCaptureViewController
 
 @synthesize fps = _fps;
+@synthesize frameNumber = _frameNumber;
 @synthesize camera = _camera;
 @synthesize captureGrayscale = _captureGrayscale;
 @synthesize qualityPreset = _qualityPreset;
@@ -224,10 +225,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         AVCaptureVideoOrientation videoOrientation = [[[_videoOutput connections] objectAtIndex:0] videoOrientation];
         
         if (self.isRecoding) {
-            static int64_t frameNumber = 0;
             //CVPixelBufferLockBaseAddress(pixelBuffer);
             if (self.assetWriterInput.readyForMoreMediaData) {
-                if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(frameNumber, 25)]) {
+                if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(self.frameNumber, 25)]) {
                     NSLog(@"Unable append pixelBuffer to adaptor");
                     
                     NSLog(@"%@", [self.assetWriter error]);
@@ -237,8 +237,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             {
                 NSLog(@"assetWriterInput is not readyForMoreMediaData");
             }
-            NSLog(@"recording...frameNumber:%lld", frameNumber);
-            frameNumber++;
+            NSLog(@"recording...frameNumber:%lld", self.frameNumber);
+            _frameNumber++;
         }
         
         if (format == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
