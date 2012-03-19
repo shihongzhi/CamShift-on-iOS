@@ -178,10 +178,14 @@
     
     CGAffineTransform t = [self affineTransformForVideoFrame:rect orientation:videoOrientation];
     CGRect targetRect; 
-    targetRect.origin.x = trackbox.center.x - trackbox.size.width / 2;
-    targetRect.origin.y = trackbox.center.y - trackbox.size.height / 2;
-    targetRect.size.width = trackbox.size.width;
-    targetRect.size.height = trackbox.size.height;
+    //targetRect.origin.x = trackbox.center.x - trackbox.size.width / 2;
+    //targetRect.origin.y = trackbox.center.y - trackbox.size.height / 2;
+    //targetRect.size.width = trackbox.size.width;
+    //targetRect.size.height = trackbox.size.height;
+    targetRect.origin.x = trackbox.center.x - 4.0f;
+    targetRect.origin.y = trackbox.center.y - 4.0f;
+    targetRect.size.width = 8;
+    targetRect.size.height = 8;
     //显示框转换到view坐标下
     targetRect = CGRectApplyAffineTransform(targetRect, t);
     

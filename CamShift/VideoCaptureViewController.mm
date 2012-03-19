@@ -268,7 +268,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             pixelBuffer = [self drowLightLocation:location toPixelBuffer:pixelBuffer];
             
             if (self.assetWriterInput.readyForMoreMediaData) {
-                if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(self.frameNumber, 25)]) {
+                if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(self.frameNumber, 30)]) {
                     NSLog(@"Unable append pixelBuffer to adaptor");
                     
                     NSLog(@"%@", [self.assetWriter error]);
@@ -336,12 +336,16 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     [self.lightPath addObject:[NSValue valueWithCGPoint:location]];
     BOOL firstLocation = YES;
     CGPoint pathLocationPre;
+    unsigned char *pixel = NULL;
     for (NSValue* pathLocationValue in self.lightPath) {
         CGPoint pathLocation = [pathLocationValue CGPointValue];
         if (firstLocation) {
-            unsigned char *pixel = rowBase + ((int)(bufferHeight - pathLocation.x) * bytesPerRow) + (int)(pathLocation.y);
-            pixel[0] = 255;
-            
+            for (int t=-2; t<=2; t++) {
+                for (int k=-2; k<=2; k++) {
+                    pixel = rowBase + ((int)(bufferHeight - pathLocation.x + t) * bytesPerRow) + (int)(pathLocation.y + k);
+                    pixel[0] = 255;
+                }
+            }
             firstLocation = NO;
         }
         else{
@@ -351,17 +355,37 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             int maxY = pathLocation.y > pathLocationPre.y ? pathLocation.y : pathLocationPre.y;
             //NSLog(@"minX = %d; maxX = %d; minY = %d; maxY = %d", minX, maxX, minY, maxY);
             //如果跳跃过大，则不画中间的过渡线
-            if (maxX-minX<=7 && maxY-minY<=7) {
+            if (maxX-minX<=20 && maxY-minY<=20) {
                 for (int i = minX; i < maxX; i++) {
                     for (int j = minY; j < maxY; j++) {
-                        unsigned char *pixel = rowBase + ((bufferHeight - i) * bytesPerRow) + j;
-                        pixel[0] = 255;
+                        for (int t=-2; t<=2; t++) {
+                            for (int k=-2; k<=2; k++) {
+                                pixel = rowBase + ((int)(bufferHeight - i + t) * bytesPerRow) + (int)(j + k);
+                                pixel[0] = 255;
+                            }
+                        }
                     }
                 }
             }
         }
         pathLocationPre = pathLocation;
     }
+    //这里的tranpose会很麻烦，因为YUV的格式问题
+    //http://stackoverflow.com/a/4577389/379941
+//    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+//                             [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
+//                             [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey,
+//                             nil];
+//    CVPixelBufferRef transposeBuffer = NULL;
+//    CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, bufferHeight, bufferWidth, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange, (__bridge CFDictionaryRef)options, &transposeBuffer);
+//    NSParameterAssert(status == kCVReturnSuccess && transposeBuffer != NULL);
+//    CVPixelBufferLockBaseAddress(transposeBuffer, 0);
+//    
+//    void *dest_buff = CVPixelBufferGetBaseAddress(transposeBuffer);
+//    void *src_buff = CVPixelBufferGetBaseAddress(pixelBuffer);
+//    
+//    
+//    CVPixelBufferUnlockBaseAddress(transposeBuffer, 0);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     return pixelBuffer;
 }

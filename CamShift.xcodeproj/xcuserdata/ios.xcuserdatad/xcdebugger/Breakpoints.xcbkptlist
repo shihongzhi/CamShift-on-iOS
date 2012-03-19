@@ -65,11 +65,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/CamshiftViewController.mm"
-         timestampString = "353828721.99361"
+         timestampString = "353834337.231444"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "333"
-         endingLineNumber = "333"
+         startingLineNumber = "337"
+         endingLineNumber = "337"
          landmarkName = "-touchesEnded:withEvent:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -79,11 +79,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/CamshiftViewController.mm"
-         timestampString = "353828721.99361"
+         timestampString = "353834337.231444"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "330"
-         endingLineNumber = "330"
+         startingLineNumber = "334"
+         endingLineNumber = "334"
          landmarkName = "-touchesEnded:withEvent:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -107,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353831273.294376"
+         timestampString = "353835130.529342"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "512"
-         endingLineNumber = "512"
+         startingLineNumber = "536"
+         endingLineNumber = "536"
          landmarkName = "-createCaptureSessionForCamera:qualityPreset:grayscale:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -121,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353831273.294376"
+         timestampString = "353835130.529342"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "551"
-         endingLineNumber = "551"
+         startingLineNumber = "575"
+         endingLineNumber = "575"
          landmarkName = "-setupWriter"
          landmarkType = "5">
       </FileBreakpoint>
