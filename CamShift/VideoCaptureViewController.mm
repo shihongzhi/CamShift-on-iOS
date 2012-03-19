@@ -24,8 +24,9 @@ const int kFrameTimeBufferSize = 5;
 - (BOOL)createCaptureSessionForCamera:(NSInteger)camera qualityPreset:(NSString *)qualityPreset grayscale:(BOOL)grayscale;
 - (BOOL)setupWriter;
 - (void)destroyCaptureSession;
-- (void)processFrame:(cv::Mat&)mat videoRect:(CGRect)rect videoOrientation:(AVCaptureVideoOrientation)orientation;
+- (CGPoint)processFrame:(cv::Mat&)mat videoRect:(CGRect)rect videoOrientation:(AVCaptureVideoOrientation)orientation;
 - (void)updateDebugInfo;
+- (CVPixelBufferRef)drowLightLocation:(CGPoint)location toPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
 @property (nonatomic, assign) float fps;
 
@@ -48,6 +49,7 @@ const int kFrameTimeBufferSize = 5;
 @synthesize tempFileURL = _tempFileURL;
 @synthesize isRecoding = _isRecoding;
 @synthesize assetWriterError = _assetWriterError;
+@synthesize lightPath = _lightPath;
 
 @dynamic showDebugInfo;
 @dynamic torchOn;
@@ -107,6 +109,14 @@ const int kFrameTimeBufferSize = 5;
     
     [self destroyCaptureSession];
     _fpsLabel = nil;
+}
+
+- (NSMutableArray*)lightPath
+{
+    if (!_lightPath) {
+        _lightPath = [[NSMutableArray alloc] init];
+    }
+    return _lightPath;
 }
 
 // MARK: Accessors
@@ -224,8 +234,39 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CGRect videoRect = CGRectMake(0.0f, 0.0f, CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
         AVCaptureVideoOrientation videoOrientation = [[[_videoOutput connections] objectAtIndex:0] videoOrientation];
         
+        CGPoint location = CGPointMake(0, 0);
+
+        
+        if (format == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
+            // For grayscale mode, the luminance channel of the YUV data is used
+            CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+            //获得0通道的pixle位置
+            void *baseaddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+            
+            cv::Mat mat(videoRect.size.height, videoRect.size.width, CV_8UC1, baseaddress, 0);
+            
+            location = [self processFrame:mat videoRect:videoRect videoOrientation:videoOrientation];
+            
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0); 
+        }
+        else if (format == kCVPixelFormatType_32BGRA) {
+            // For color mode a 4-channel cv::Mat is created from the BGRA data
+            CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+            void *baseaddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+            
+            cv::Mat mat(videoRect.size.height, videoRect.size.width, CV_8UC4, baseaddress, 0);
+            
+            location = [self processFrame:mat videoRect:videoRect videoOrientation:videoOrientation];
+            
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);    
+        }
+        else {
+            NSLog(@"Unsupported video format");
+        }
+        
         if (self.isRecoding) {
-            //CVPixelBufferLockBaseAddress(pixelBuffer);
+            pixelBuffer = [self drowLightLocation:location toPixelBuffer:pixelBuffer];
+            
             if (self.assetWriterInput.readyForMoreMediaData) {
                 if (![self.pixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:CMTimeMake(self.frameNumber, 25)]) {
                     NSLog(@"Unable append pixelBuffer to adaptor");
@@ -239,32 +280,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             }
             NSLog(@"recording...frameNumber:%lld", self.frameNumber);
             _frameNumber++;
-        }
-        
-        if (format == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
-            // For grayscale mode, the luminance channel of the YUV data is used
-            CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-            void *baseaddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-            
-            cv::Mat mat(videoRect.size.height, videoRect.size.width, CV_8UC1, baseaddress, 0);
-            
-            [self processFrame:mat videoRect:videoRect videoOrientation:videoOrientation];
-            
-            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0); 
-        }
-        else if (format == kCVPixelFormatType_32BGRA) {
-            // For color mode a 4-channel cv::Mat is created from the BGRA data
-            CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-            void *baseaddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-            
-            cv::Mat mat(videoRect.size.height, videoRect.size.width, CV_8UC4, baseaddress, 0);
-            
-            [self processFrame:mat videoRect:videoRect videoOrientation:videoOrientation];
-            
-            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);    
-        }
-        else {
-            NSLog(@"Unsupported video format");
         }
         
         // Update FPS calculation
@@ -306,6 +321,49 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         }
     
     }
+}
+
+//drow light path location to the pixelBuffer
+- (CVPixelBufferRef)drowLightLocation:(CGPoint)location toPixelBuffer:(CVPixelBufferRef)pixelBuffer
+{
+    //draw the path on the frame
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    int bufferHeight = CVPixelBufferGetHeight(pixelBuffer);
+    int bufferWidth = CVPixelBufferGetWidth(pixelBuffer);
+    unsigned char *rowBase = (unsigned char *)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+    int bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
+    
+    [self.lightPath addObject:[NSValue valueWithCGPoint:location]];
+    BOOL firstLocation = YES;
+    CGPoint pathLocationPre;
+    for (NSValue* pathLocationValue in self.lightPath) {
+        CGPoint pathLocation = [pathLocationValue CGPointValue];
+        if (firstLocation) {
+            unsigned char *pixel = rowBase + ((int)(bufferHeight - pathLocation.x) * bytesPerRow) + (int)(pathLocation.y);
+            pixel[0] = 255;
+            
+            firstLocation = NO;
+        }
+        else{
+            int minX = pathLocation.x > pathLocationPre.x ? pathLocationPre.x : pathLocation.x;
+            int minY = pathLocation.y > pathLocationPre.y ? pathLocationPre.y : pathLocation.y;
+            int maxX = pathLocation.x > pathLocationPre.x ? pathLocation.x : pathLocationPre.x;
+            int maxY = pathLocation.y > pathLocationPre.y ? pathLocation.y : pathLocationPre.y;
+            //NSLog(@"minX = %d; maxX = %d; minY = %d; maxY = %d", minX, maxX, minY, maxY);
+            //如果跳跃过大，则不画中间的过渡线
+            if (maxX-minX<=7 && maxY-minY<=7) {
+                for (int i = minX; i < maxX; i++) {
+                    for (int j = minY; j < maxY; j++) {
+                        unsigned char *pixel = rowBase + ((bufferHeight - i) * bytesPerRow) + j;
+                        pixel[0] = 255;
+                    }
+                }
+            }
+        }
+        pathLocationPre = pathLocation;
+    }
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    return pixelBuffer;
 }
 
 
@@ -510,7 +568,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                 [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange],
                                 kCVPixelBufferPixelFormatTypeKey, nil]];
 
-    NSLog([self.tempFileURL absoluteString]);
+    //NSLog([self.tempFileURL absoluteString]);
     NSParameterAssert(self.pixelBufferAdaptor);
     if ([self.assetWriter canAddInput:self.assetWriterInput]) {
         [self.assetWriter addInput:self.assetWriterInput];

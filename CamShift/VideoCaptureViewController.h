@@ -57,6 +57,7 @@
 @property (nonatomic, strong) NSURL *tempFileURL;
 @property (nonatomic, assign) BOOL isRecoding;
 @property (nonatomic, strong) NSError *assetWriterError;
+@property (nonatomic, strong) NSMutableArray *lightPath;
 
 // -1: default, 0: back camera, 1: front camera
 @property (nonatomic, assign) int camera;

@@ -82,11 +82,12 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)processFrame:(cv::Mat &)mat videoRect:(CGRect)rect videoOrientation:(AVCaptureVideoOrientation)videOrientation {
+- (CGPoint)processFrame:(cv::Mat &)mat videoRect:(CGRect)rect videoOrientation:(AVCaptureVideoOrientation)videOrientation {
     // Rotate video frame by 90deg to portrait by combining a transpose and a flip
     // Note that AVCaptureVideoDataOutput connection does NOT support hardware-accelerated
     // rotation and mirroring via videoOrientation and setVideoMirrored properties so we
     // need to do the rotation in software here.
+    CGPoint location = CGPointMake(0, 0);
     cv::transpose(mat, mat);
     CGFloat temp = rect.size.width;
     rect.size.width = rect.size.height;
@@ -123,7 +124,7 @@
         //还没有进行属性提取,进行属性提取
         if (self.trackObjectFlag < 0) {
             self.trackObjectFlag = 1;
-            //坐标转换
+            //对选择框坐标转换
             CGAffineTransform t = [self affineTransformForVideoFrame:rect orientation:videOrientation];
             CGAffineTransform invT = CGAffineTransformInvert(t);
             self.selectCGRect = CGRectApplyAffineTransform(self.selectCGRect, invT);
@@ -147,13 +148,16 @@
         cvCalcBackProject(&_image, self.backproject, self.hist);
         cvCamShift(self.backproject, self.track_window, cvTermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1), &_track_comp, &_track_box);
         self.track_window = self.track_comp.rect;
-        
+        location.x = self.track_box.center.x;
+        location.y = self.track_box.center.y;
         // Dispatch updating of tracker box  to main queue
         dispatch_sync(dispatch_get_main_queue(), ^{
             //display method in here
             [self displayEllipseBox:self.track_box forVideoRect:rect videoOrientation:videOrientation];
-        }); 
+        });
     }
+    //NSLog(@"location.x = %f; location.y = %f", location.x, location.y);
+    return location;
 }
 
 - (void)displayEllipseBox:(CvBox2D)trackbox forVideoRect:(CGRect)rect videoOrientation:(AVCaptureVideoOrientation)videoOrientation{
@@ -178,7 +182,7 @@
     targetRect.origin.y = trackbox.center.y - trackbox.size.height / 2;
     targetRect.size.width = trackbox.size.width;
     targetRect.size.height = trackbox.size.height;
-    
+    //显示框转换到view坐标下
     targetRect = CGRectApplyAffineTransform(targetRect, t);
     
     CALayer *featurelayer = nil;
@@ -204,6 +208,7 @@
 }
 
 - (IBAction)toggleRecord:(id)sender {
+    //start record video
     if (!self.isRecoding) {
         if ([self.assetWriter status] == AVAssetWriterStatusCompleted) {
             NSError *error = nil;
@@ -225,13 +230,14 @@
         [self.recordButton setTitle:@"Stop" forState:UIControlStateNormal];
         //caution
         [self removeFile:self.tempFileURL];
+        [self.lightPath removeAllObjects];
         if(![self.assetWriter startWriting]){
             NSLog(@"assetWriter startWriting error!");
             NSLog(@"%@", [self.assetWriter error]);
         }
         [self.assetWriter startSessionAtSourceTime:kCMTimeZero];
     }
-    else
+    else //finish the record
     {
         NSLog(@"finish video recording...");
         self.isRecoding = NO;

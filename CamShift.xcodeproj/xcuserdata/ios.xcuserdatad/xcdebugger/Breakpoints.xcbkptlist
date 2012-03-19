@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353484840.539709"
+         timestampString = "353830113.117253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "279"
-         endingLineNumber = "279"
+         startingLineNumber = "294"
+         endingLineNumber = "294"
          landmarkName = "-captureOutput:didOutputSampleBuffer:fromConnection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353484840.539709"
+         timestampString = "353830113.117253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "271"
-         endingLineNumber = "271"
+         startingLineNumber = "286"
+         endingLineNumber = "286"
          landmarkName = "-captureOutput:didOutputSampleBuffer:fromConnection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -37,11 +37,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353498305.205592"
+         timestampString = "353830113.117253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "55"
-         endingLineNumber = "55"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
          landmarkName = "-initWithNibName:bundle:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -51,11 +51,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353498305.205592"
+         timestampString = "353830113.117253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
+         startingLineNumber = "55"
+         endingLineNumber = "55"
          landmarkName = "torchOn"
          landmarkType = "19">
       </FileBreakpoint>
@@ -65,11 +65,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/CamshiftViewController.mm"
-         timestampString = "353497904.701284"
+         timestampString = "353828721.99361"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "327"
-         endingLineNumber = "327"
+         startingLineNumber = "333"
+         endingLineNumber = "333"
          landmarkName = "-touchesEnded:withEvent:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -79,11 +79,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/CamshiftViewController.mm"
-         timestampString = "353497904.701284"
+         timestampString = "353828721.99361"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "324"
-         endingLineNumber = "324"
+         startingLineNumber = "330"
+         endingLineNumber = "330"
          landmarkName = "-touchesEnded:withEvent:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -93,25 +93,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/CamshiftViewController.mm"
-         timestampString = "352794231.705423"
+         timestampString = "353817782.956061"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "108"
-         endingLineNumber = "108"
-         landmarkName = "-processFrame:videoRect:videoOrientation:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "CamShift/CamshiftViewController.mm"
-         timestampString = "352794231.705423"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "152"
-         endingLineNumber = "152"
+         startingLineNumber = "109"
+         endingLineNumber = "109"
          landmarkName = "-processFrame:videoRect:videoOrientation:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -121,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353484840.539709"
+         timestampString = "353831273.294376"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "454"
-         endingLineNumber = "454"
+         startingLineNumber = "512"
+         endingLineNumber = "512"
          landmarkName = "-createCaptureSessionForCamera:qualityPreset:grayscale:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,26 +121,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353484840.539709"
+         timestampString = "353831273.294376"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "493"
-         endingLineNumber = "493"
+         startingLineNumber = "551"
+         endingLineNumber = "551"
          landmarkName = "-setupWriter"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "CamShift/VideoCaptureViewController.mm"
-         timestampString = "353484840.539709"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "231"
-         endingLineNumber = "231"
-         landmarkName = "-captureOutput:didOutputSampleBuffer:fromConnection:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
